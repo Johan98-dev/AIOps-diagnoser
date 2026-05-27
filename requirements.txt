@@ -1,0 +1,15 @@
+# API Framework
+fastapi==0.110.0
+uvicorn[standard]==0.28.0
+
+# Variables de entorno y configuración
+pydantic-settings==2.2.1
+
+# LLM (Cliente HTTP nativo para APIs Open Source como Ollama, Groq, u OpenAI-compatible)
+openai==1.14.1
+
+# Observabilidad (OpenTelemetry)
+opentelemetry-api==1.23.0
+opentelemetry-sdk==1.23.0
+opentelemetry-instrumentation-fastapi==0.44b0
+opentelemetry-exporter-otlp==1.23.0
