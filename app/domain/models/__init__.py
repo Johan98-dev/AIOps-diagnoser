@@ -5,6 +5,7 @@ from .diagnostic import (
     DiagnosticResult,
     DiagnosticReport,
 )
+from .enums import LogLevel, DiagnosticStatus
 
 __all__ = [
     "LogEntry",
@@ -12,4 +13,6 @@ __all__ = [
     "DiagnosticRequest",
     "DiagnosticResult",
     "DiagnosticReport",
+    "LogLevel",
+    "DiagnosticStatus",
 ]

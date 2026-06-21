@@ -2,10 +2,12 @@ from datetime import datetime
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 
+from .enums import LogLevel, DiagnosticStatus
+
 class LogEntry(BaseModel):
     """Represents an individual log entry."""
     timestamp: datetime
-    level: str
+    level: LogLevel
     message: str
     service_name: Optional[str] = None
     trace_id: Optional[str] = None
@@ -37,6 +39,7 @@ class DiagnosticResult(BaseModel):
 class DiagnosticReport(BaseModel):
     """Final diagnostic report."""
     report_id: str
+    status: DiagnosticStatus = Field(default=DiagnosticStatus.COMPLETED)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     context: TelemetryContext
     diagnosis: DiagnosticResult
