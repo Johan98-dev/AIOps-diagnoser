@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 
@@ -40,6 +40,6 @@ class DiagnosticReport(BaseModel):
     """Final diagnostic report."""
     report_id: str
     status: DiagnosticStatus = Field(default=DiagnosticStatus.COMPLETED)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     context: TelemetryContext
     diagnosis: DiagnosticResult

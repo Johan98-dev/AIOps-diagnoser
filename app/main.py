@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from app.api.v1.routes import health
+from app.api.v1.routes import health, diagnose
 from app.core.config import settings
 
 @asynccontextmanager
@@ -19,6 +19,8 @@ app = FastAPI(
 
 # Include routers
 app.include_router(health.router, prefix="/api/v1", tags=["Health"])
+app.include_router(diagnose.router, prefix="/api/v1", tags=["Diagnose"])
+
 
 # Root redirect or simple message
 @app.get("/")

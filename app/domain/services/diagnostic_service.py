@@ -1,6 +1,6 @@
 from typing import Optional
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..models.diagnostic import DiagnosticRequest, DiagnosticResult, DiagnosticReport, TelemetryContext
 from ..models.enums import DiagnosticStatus
@@ -39,9 +39,10 @@ class DiagnosticService:
         report = DiagnosticReport(
             report_id=str(uuid.uuid4()),
             status=DiagnosticStatus.COMPLETED,
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
             context=context,
             diagnosis=diagnosis
         )
 
         return report
+
