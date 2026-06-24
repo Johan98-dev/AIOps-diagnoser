@@ -41,7 +41,7 @@ AIOps Diagnoser is an automated infrastructure diagnostics system built with Fas
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/Johan98-dev/AIOps-diagnoser.git
    cd aiops-diagnoser
    ```
 2. Create and activate a virtual environment:
