@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.api.v1.routes import health, diagnose
 from app.core.config import settings
+from app.infrastructure.telemetry.otel import setup_telemetry
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -10,6 +11,9 @@ async def lifespan(app: FastAPI):
     yield
     # Shutdown logic (e.g., close connections)
     print(f"Shutting down {settings.app_name}...")
+    from app.infrastructure.telemetry.otel import shutdown_telemetry
+    shutdown_telemetry()
+
 
 app = FastAPI(
     title=settings.app_name,
@@ -17,7 +21,11 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Setup OpenTelemetry instrumentation
+setup_telemetry(app)
+
 # Include routers
+
 app.include_router(health.router, prefix="/api/v1", tags=["Health"])
 app.include_router(diagnose.router, prefix="/api/v1", tags=["Diagnose"])
 

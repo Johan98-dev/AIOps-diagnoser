@@ -1,8 +1,16 @@
 from unittest.mock import AsyncMock, patch
+import pytest
 from fastapi.testclient import TestClient
 from app.main import app
+from app.infrastructure.telemetry.otel import shutdown_telemetry
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_telemetry():
+    yield
+    shutdown_telemetry()
 
 client = TestClient(app)
+
 
 def test_health():
     response = client.get("/api/v1/health")
