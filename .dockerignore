@@ -1,0 +1,23 @@
+# Git and environment config
+.git
+.env
+.env.example
+
+# Python virtual environment and cache files
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Testing and dev directories
+tests/
+chaos/
+
+# Documentations and Docker files
+*.md
+LICENSE
+Dockerfile
+docker-compose.yml
