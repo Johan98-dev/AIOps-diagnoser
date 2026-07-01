@@ -1,19 +1,23 @@
-from typing import Optional
 import uuid
 from datetime import datetime, timezone
 
 from ..models.diagnostic import DiagnosticRequest, DiagnosticResult, DiagnosticReport, TelemetryContext
 from ..models.enums import DiagnosticStatus
+from .prompt_builder import PromptBuilder
+from app.infrastructure.llm.client import LlmClient
 
 class DiagnosticService:
     """Service responsible for coordinating the diagnostic process."""
 
+    def __init__(self):
+        self.prompt_builder = PromptBuilder()
+        self.llm_client = LlmClient()
+
     async def run_diagnosis(self, request: DiagnosticRequest) -> DiagnosticReport:
         """
-        Runs the diagnostic process for a given request.
-        Currently returns a hardcoded response for testing purposes.
+        Runs the diagnostic process for a given request by formatting context and querying Groq LLM.
         """
-        # 1. Gather telemetry (Mocked for now)
+        # 1. Gather telemetry (Mocked for now - to be connected to otel adapter)
         context = TelemetryContext(
             service_name=request.service_name,
             logs=[],
@@ -22,20 +26,22 @@ class DiagnosticService:
             metadata={"status": "telemetry_gathering_skipped"}
         )
 
-        # 2. Generate diagnosis (Hardcoded for now)
+        # 2. Build prompt and run LLM diagnosis
+        system_instruction = self.prompt_builder.build_system_instruction()
+        user_prompt = self.prompt_builder.build_user_prompt(context, request.error_message)
+
+        raw_diagnosis = await self.llm_client.generate_diagnosis(user_prompt, system_instruction)
+
+        # 3. Parse JSON response into DiagnosticResult
         diagnosis = DiagnosticResult(
-            summary=f"Analysis of service '{request.service_name}' complete.",
-            root_cause="Mocked root cause: High CPU usage due to unoptimized loops.",
-            impact_analysis="Increased latency for downstream services.",
-            suggested_actions=[
-                "Scale the service horizontally.",
-                "Review the recent deployment for performance regressions.",
-                "Enable profiling to identify the bottleneck."
-            ],
-            confidence_score=0.95
+            summary=raw_diagnosis.get("summary", "No summary generated."),
+            root_cause=raw_diagnosis.get("root_cause", "No root cause identified."),
+            impact_analysis=raw_diagnosis.get("impact_analysis", "No impact analysis generated."),
+            suggested_actions=raw_diagnosis.get("suggested_actions", []),
+            confidence_score=raw_diagnosis.get("confidence_score", 0.0)
         )
 
-        # 3. Create and return report
+        # 4. Create and return report
         report = DiagnosticReport(
             report_id=str(uuid.uuid4()),
             status=DiagnosticStatus.COMPLETED,
@@ -45,4 +51,3 @@ class DiagnosticService:
         )
 
         return report
-
