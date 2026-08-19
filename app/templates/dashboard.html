@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIOps Diagnoser - Command Console</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="header">
+        <div class="brand">
+            <span class="brand-icon">⚡</span>
+            <span class="brand-title">AIOps Diagnoser Console</span>
+        </div>
+        <div class="status-bar">
+            <div class="status-badge">
+                <span id="apiStatusDot" class="dot"></span>
+                <span id="apiStatusText">API: Checking...</span>
+            </div>
+            <div class="status-badge">
+                <span class="dot online"></span>
+                <span>SigNoz OTLP: Connected</span>
+            </div>
+            <div class="status-badge">
+                <span class="dot online"></span>
+                <span>Langfuse LLMOps: Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Left Panel: Controls -->
+        <section class="card">
+            <h3 class="card-title">🎮 Operational Controls</h3>
+            <form id="diagnoseForm" class="result-section">
+                <div class="form-group">
+                    <label for="serviceName">Target Service</label>
+                    <select id="serviceName" required>
+                        <option value="payment-service">payment-service</option>
+                        <option value="inventory-service">inventory-service</option>
+                        <option value="auth-service">auth-service</option>
+                        <option value="analytics-service">analytics-service</option>
+                        <option value="order-service">order-service</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lookbackMinutes">Lookback Window (Minutes)</label>
+                    <input type="number" id="lookbackMinutes" value="15" min="1" max="120" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="errorMessage">Error Symptom / Stack Trace (Optional)</label>
+                    <textarea id="errorMessage" placeholder="e.g., ConnectionPoolExhausted: Timeout waiting for Postgres connection..."></textarea>
+                </div>
+
+                <button type="submit" id="runBtn" class="btn btn-primary">
+                    <span id="btnSpinner" class="spinner" style="display: none;"></span>
+                    <span id="btnText">Run AI Diagnosis</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Right Panel: Diagnostics View -->
+        <section class="card">
+            <h3 class="card-title">🤖 AI Diagnostic Report</h3>
+            
+            <div id="emptyState" class="empty-state">
+                <div class="empty-state-icon">📡</div>
+                <h4>No Diagnosis Executed Yet</h4>
+                <p>Select a service on the left panel and click <strong>"Run AI Diagnosis"</strong> to trigger real-time telemetry analysis.</p>
+            </div>
+
+            <div id="resultsContainer" class="result-section" style="display: none;">
+                <!-- Dynamically populated by dashboard.js -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Links -->
+    <footer class="footer">
+        <div>AIOps Diagnoser v0.1.0 — Clean Architecture & Open-Source Observability</div>
+        <div class="footer-links">
+            <a href="http://localhost:3301" target="_blank" rel="noopener">📊 Open SigNoz Console (:3301)</a>
+            <a href="http://localhost:3000" target="_blank" rel="noopener">🔍 Open Langfuse Tracing (:3000)</a>
+            <a href="/docs" target="_blank" rel="noopener">📘 OpenAPI Docs (/docs)</a>
+        </div>
+    </footer>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

@@ -21,16 +21,31 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, FileResponse
+
 # Setup OpenTelemetry instrumentation
 setup_telemetry(app)
 
-# Include routers
+# Mount static files directory
+BASE_DIR = Path(__file__).resolve().parent
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
+# Include routers
 app.include_router(health.router, prefix="/api/v1", tags=["Health"])
 app.include_router(diagnose.router, prefix="/api/v1", tags=["Diagnose"])
 
 
-# Root redirect or simple message
+# Dashboard UI route
+@app.get("/dashboard", response_class=HTMLResponse)
+async def get_dashboard():
+    html_path = BASE_DIR / "templates" / "dashboard.html"
+    return FileResponse(html_path)
+
+
+# Root redirect to dashboard
 @app.get("/")
 async def root():
-    return {"message": f"Welcome to {settings.app_name} API. Visit /docs for documentation."}
+    html_path = BASE_DIR / "templates" / "dashboard.html"
+    return FileResponse(html_path)

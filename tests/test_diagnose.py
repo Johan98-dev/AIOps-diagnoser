@@ -17,6 +17,11 @@ def test_health():
     assert response.status_code == 200
     assert response.json()["status"] == "healthy"
 
+def test_dashboard():
+    response = client.get("/dashboard")
+    assert response.status_code == 200
+    assert "AIOps Diagnoser Console" in response.text
+
 @patch("app.infrastructure.llm.client.LlmClient.generate_diagnosis", new_callable=AsyncMock)
 def test_diagnose_mock(mock_generate_diagnosis):
     # Set the return value of the mocked LLM response
