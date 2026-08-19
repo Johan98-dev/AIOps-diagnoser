@@ -8,8 +8,9 @@ pydantic-settings==2.2.1
 # LLM (Cliente HTTP nativo para APIs Open Source como Ollama, Groq, u OpenAI-compatible)
 openai==1.14.1
 
-# Observabilidad (OpenTelemetry)
-opentelemetry-api==1.23.0
-opentelemetry-sdk==1.23.0
-opentelemetry-instrumentation-fastapi==0.44b0
-opentelemetry-exporter-otlp==1.23.0
+# Observabilidad (OpenTelemetry & LLMOps)
+opentelemetry-api>=1.44.0
+opentelemetry-sdk>=1.44.0
+opentelemetry-instrumentation-fastapi>=0.65b0
+opentelemetry-exporter-otlp>=1.44.0
+langfuse>=2.0.0
