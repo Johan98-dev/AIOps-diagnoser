@@ -1,18 +1,18 @@
 # AIOps Diagnoser
 
-AIOps Diagnoser is an automated infrastructure diagnostics system built with FastAPI. It leverages **OpenTelemetry** and **Dynatrace** to capture comprehensive system telemetry (logs, metrics, and spans) and utilizes Large Language Models (LLMs) to automatically detect root causes, calculate impact, and generate remediation steps for system errors.
+AIOps Diagnoser is an automated infrastructure diagnostics system built with FastAPI. It leverages **OpenTelemetry**, **SigNoz**, and **Langfuse** to capture comprehensive system telemetry (logs, metrics, spans, and LLM tracing) and utilizes Large Language Models (LLMs) to automatically detect root causes, calculate impact, and generate remediation steps for system errors.
 
 ## Key Features
 - **Structured Infrastructure Diagnostics**: Coordinates telemetric inputs to analyze anomalies across distributed microservices.
 - **LLM-Powered Root Cause Analysis (RCA)**: Integrates with open-source LLMs (via Groq/OpenAI-compatible APIs) to generate precise diagnoses.
 - **OpenTelemetry-Native**: Standardized instrumentation for metrics, logs, and span exporting.
-- **Dynatrace Observability**: Seamless telemetry ingestion from production environments.
+- **Open-Source Observability & LLMOps**: Seamless system telemetry ingestion via **SigNoz** and LLM generation tracing with **Langfuse**.
 - **Chaos Engineering**: Built-in fault injection mechanisms to simulate production anomalies and validate diagnostics.
 - **Clean Architecture**: High separation of concerns between domain logic, HTTP APIs, and infrastructure clients.
 
 ## Tech Stack
 - **Language**: Python 3.12.10 (FastAPI, Pydantic v2, Pydantic Settings)
-- **Observability**: OpenTelemetry SDK/API, OTLP Exporter
+- **Observability**: OpenTelemetry SDK/API, OTLP Exporter, SigNoz, Langfuse
 - **AI/LLM**: OpenAI client SDK (compatible with Groq / Ollama / local models)
 - **Deployment**: Docker & Docker Compose
 

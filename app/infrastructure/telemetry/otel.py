@@ -26,7 +26,7 @@ def setup_telemetry(app: FastAPI) -> None:
     # Initialize TracerProvider
     provider = TracerProvider(resource=resource)
 
-    # Determine backend exporter: standard OTLP (e.g. for Dynatrace) vs Console
+    # Determine backend exporter: standard OTLP (e.g. for SigNoz / OTEL Collector) vs Console
     otlp_endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
     if otlp_endpoint:
         # Connect to OTLP backend using gRPC exporter
