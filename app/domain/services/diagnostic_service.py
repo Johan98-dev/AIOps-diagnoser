@@ -1,29 +1,29 @@
 import uuid
+from typing import Optional
 from datetime import datetime, timezone
 
 from ..models.diagnostic import DiagnosticRequest, DiagnosticResult, DiagnosticReport, TelemetryContext
 from ..models.enums import DiagnosticStatus
 from .prompt_builder import PromptBuilder
 from app.infrastructure.llm.client import LlmClient
+from app.infrastructure.telemetry.collector import TelemetryCollector
 
 class DiagnosticService:
     """Service responsible for coordinating the diagnostic process."""
 
     def __init__(self):
         self.prompt_builder = PromptBuilder()
+        self.telemetry_collector = TelemetryCollector()
         self.llm_client = LlmClient()
 
     async def run_diagnosis(self, request: DiagnosticRequest) -> DiagnosticReport:
         """
-        Runs the diagnostic process for a given request by formatting context and querying Groq LLM.
+        Runs the diagnostic process for a given request by fetching telemetry and querying Groq LLM.
         """
-        # 1. Gather telemetry (Mocked for now - to be connected to otel adapter)
-        context = TelemetryContext(
+        # 1. Gather active telemetry context (logs, traces, metrics)
+        context = await self.telemetry_collector.get_telemetry_context(
             service_name=request.service_name,
-            logs=[],
-            metrics=[],
-            spans=[],
-            metadata={"status": "telemetry_gathering_skipped"}
+            lookback_minutes=request.lookback_minutes
         )
 
         # 2. Build prompt and run LLM diagnosis

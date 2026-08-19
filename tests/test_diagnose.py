@@ -45,3 +45,13 @@ def test_diagnose_mock(mock_generate_diagnosis):
     assert data["context"]["service_name"] == "payment-service"
     assert data["diagnosis"]["confidence_score"] == 0.95
     assert "Mocked root cause" in data["diagnosis"]["root_cause"]
+
+
+@pytest.mark.anyio
+async def test_telemetry_collector_offline_fallback():
+    from app.infrastructure.telemetry.collector import TelemetryCollector
+    collector = TelemetryCollector(base_url="http://invalid-localhost-9999")
+    context = await collector.get_telemetry_context("test-service", lookback_minutes=5)
+    assert context.service_name == "test-service"
+    assert context.metadata["status"] == "offline_fallback"
+

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     
     # OpenTelemetry & Observability settings
     otel_exporter_otlp_endpoint: Optional[str] = None
+    signoz_api_url: Optional[str] = "http://localhost:8080"
     
     # Langfuse LLMOps settings
     langfuse_public_key: Optional[str] = None
