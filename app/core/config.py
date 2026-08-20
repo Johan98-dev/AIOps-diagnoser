@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     app_name: str = "AIOps Diagnoser"
     version: str = "0.1.0"
     groq_api_key: str
-    llm_model: str = "llama-3.3-70b-versatile"
+    llm_model: str = "openai/gpt-oss-20b"
     
     # OpenTelemetry & Observability settings
     otel_exporter_otlp_endpoint: Optional[str] = None
